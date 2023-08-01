@@ -133,7 +133,7 @@ class ClickPixelCognitionFusionModule(nn.Module):
         additional_features = self.conv_stem(additional_features)
         coarse = x + additional_features
         context_channel = self.channel_perception_node(coarse)
-        # context_spatial = context_spatial + additional_features
-        context_spatial = self.spatial_perception_node(context_channel)
-        # x = x + context_channel
-        return self.induct_gate(context_spatial)
+        cli_channel = context_channel + additional_features
+        context_spatial = self.spatial_perception_node(cli_channel)
+        vis_spatial = x + context_spatial
+        return self.induct_gate(vis_spatial)
