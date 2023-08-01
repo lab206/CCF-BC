@@ -26,7 +26,6 @@ class BalancedNormalizedFocalLossSigmoid(nn.Module):
         self._max_mult = max_mult
 
     def forward(self, pred, label):
-        one_hot = label > 0.5
         sample_weight = label != self._ignore_label
 
         if not self._from_logits:
@@ -35,8 +34,9 @@ class BalancedNormalizedFocalLossSigmoid(nn.Module):
         pt = torch.where(sample_weight, 1.0 - torch.abs(label - pred), torch.ones_like(pred))
         beta = (1 - pt) ** self._gamma
 
-        varepsilon = torch.where(one_hot, self._varepsilon * sample_weight, (1 - self._varepsilon) * sample_weight)
-        num_imbalance_loss = varepsilon * torch.pow(pt, self._gamma + 1)
+        qt = (pred * label)
+        lt = ((1 - pred) * (1 - label))
+        num_imbalance_loss = self._varepsilon * torch.pow(1 - qt, self._gamma + 1) + (1 - self._varepsilon) * torch.pow(1 - lt, self._gamma + 1)
 
         tol_sum = torch.sum(sample_weight, dim=(-2, -1), keepdim=True)
         avg_sum = torch.sum(beta, dim=(-2, -1), keepdim=True)
