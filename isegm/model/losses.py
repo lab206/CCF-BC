@@ -43,7 +43,7 @@ class BalancedNormalizedFocalLossSigmoid(nn.Module):
         dif_kappa = tol_sum / (avg_sum + self._eps)
 
         if self._detach_delimeter:
-            kappa = kappa.detach()
+            kappa = dif_kappa.detach()
         if self._max_mult > 0:
             beta = torch.clamp_max(beta, self._max_mult)
 
