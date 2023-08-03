@@ -36,21 +36,21 @@ class BalancedNormalizedFocalLossSigmoid(nn.Module):
 
         qt = (pred * label)
         lt = ((1 - pred) * (1 - label))
-        num_imbalance_loss = self._varepsilon * torch.pow(1 - qt, self._gamma + 1) + (1 - self._varepsilon) * torch.pow(1 - lt, self._gamma + 1)
+        num_varpi = self._varepsilon * torch.pow(1 - qt, self._gamma + 1) + (1 - self._varepsilon) * torch.pow(1 - lt, self._gamma + 1)
 
         tol_sum = torch.sum(sample_weight, dim=(-2, -1), keepdim=True)
         avg_sum = torch.sum(beta, dim=(-2, -1), keepdim=True)
-        kappa = tol_sum / (avg_sum + self._eps)
+        dif_kappa = tol_sum / (avg_sum + self._eps)
 
         if self._detach_delimeter:
             kappa = kappa.detach()
         if self._max_mult > 0:
             beta = torch.clamp_max(beta, self._max_mult)
 
-        focal_loss = - beta * torch.log(torch.min(pt + self._eps, torch.ones(1, dtype=torch.float).to(pt.device)))
-        dif_imbalance_loss = kappa * focal_loss
+        fl = - beta * torch.log(torch.min(pt + self._eps, torch.ones(1, dtype=torch.float).to(pt.device)))
+        loss = dif_kappa * fl  + num_varpi
 
-        loss = self._weight * (dif_imbalance_loss * sample_weight + num_imbalance_loss)
+        loss = self._weight * (loss * sample_weight)
 
         if self._size_average:
             bsum = torch.sum(sample_weight, dim=misc.get_dims_with_exclusion(sample_weight.dim(), self._batch_axis))
