@@ -11,7 +11,7 @@
   Zhiyong&nbsp;Li</a> <b>&middot;</b>
   Shutao&nbsp;Li</a>
   <br> <br>
-  <a href="" target="_blank">Paper</a>
+  <a href="https://ieeexplore.ieee.org/document/10346985" target="_blank">Paper</a>
 </div>
 </br>
 
@@ -63,10 +63,18 @@ Datasets: [RITM Github](https://github.com/saic-vul/ritm_interactive_segmentatio
 
 The code is released under the MIT License. It is a short, permissive software license. Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source.
 
-### Update
-
-- 2023.07.31 Release code.
-
+## Citation
+~~~bibtex
+@article{lin2024click,
+  author={Lin, Jiacheng and Xiao, Zhiqiang and Wei, Xiaohui and Duan, Puhong and He, Xuan and Dian, Renwei and Li, Zhiyong and Li, Shutao},
+  journal={IEEE Transactions on Image Processing}, 
+  title={Click-Pixel Cognition Fusion Network With Balanced Cut for Interactive Image Segmentation}, 
+  year={2024},
+  volume={33},
+  pages={177-190},
+  doi={10.1109/TIP.2023.3338003}
+}
+~~~
 
 ## Acknowledgement
 Our project is developed based on [RITM](https://github.com/saic-vul/ritm_interactive_segmentation). Thanks for their excellence works.
